@@ -454,35 +454,54 @@ class SimpleLDAPLogin {
         return $username;
     }
 
+
     function ldap_auth($username, $password, $directory, $sso_auth) {
         $result = false;
+
+	    function _log($string) {
+		error_log("$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string", 0);
+	    }
+	_log("ldap_auth username: $username");
+//        $username = preg_replace("/\@ffzg\.hr$/", "", $username);
 
         if ($directory == "ad") {
             $result = $this->adldap->authenticate($this->get_domain_username($username), $password, FALSE, $sso_auth);
         } elseif ($directory == "ol") {
+/*
             // TODO - implement SSO to others directories 
             $this->ldap = ldap_connect(join(' ', (array) $this->get_setting('domain_controllers')), (int) $this->get_setting('ldap_port'));
             ldap_set_option($this->ldap, LDAP_OPT_PROTOCOL_VERSION, (int) $this->get_setting('ldap_version'));
             if (str_true($this->get_setting('use_tls'))) {
                 ldap_start_tls($this->ldap);
             }
+*/
+
+            // XXX dpavlin - force
+            $this->ldap = ldap_connect('ldaps://ldap.ffzg.hr');
+            ldap_set_option($this->ldap, LDAP_OPT_PROTOCOL_VERSION, (int) 3);
+
             // TODO - username should be DN escaped - rfc4514
             $dn = trim($this->get_setting('ol_login')) . '=' . $username . ',' . trim($this->get_setting('base_dn'));
             if (str_true($this->get_setting('search_sub_ous'))) {
                 // search for user's DN in the base DN and below
                 $filter = sprintf('(%s=%s)', trim($this->get_setting('ol_login')), $this->esc_ldap_filter_val($username));
-                $sr = @ldap_search($this->ldap, $this->get_setting('base_dn'), $filter, array('cn'));
+		_log("filter: $filter");
+                $sr = ldap_search($this->ldap, $this->get_setting('base_dn'), $filter, array('cn'));
                 if ($sr !== FALSE) {
-                    $info = @ldap_get_entries($this->ldap, $sr);
+                    $info = ldap_get_entries($this->ldap, $sr);
                     if ($info !== FALSE && $info['count'] > 0) {
                         $dn = $info[0]['dn'];
                     }
                 }
             }
-            $ldapbind = @ldap_bind($this->ldap, $dn, $password);
+            _log("dn: $dn");
+            $ldapbind = ldap_bind($this->ldap, $dn, $password);
             $this->dn = $dn;
             $result = $ldapbind;
         }
+
+        ldap_get_option($this->ldap, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
+	_log("ldap_auth: $username = $result [$extended_error]");
 
         return apply_filters($this->prefix . 'ldap_auth', $result);
     }
