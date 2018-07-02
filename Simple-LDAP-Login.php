@@ -116,19 +116,19 @@ class SimpleLDAPLogin {
 
     function activate() {
         // Default settings
-        $this->add_setting('account_suffix', "@mydomain.org");
-        $this->add_setting('base_dn', "DC=mydomain,DC=org");
-        $this->add_setting('domain_controllers', array("dc01.mydomain.local"));
-        $this->add_setting('directory', "ad");
+        $this->add_setting('account_suffix', "@ffzg.hr"); // not used for openldap
+        $this->add_setting('base_dn', "DC=ffzg,DC=hr");
+        $this->add_setting('domain_controllers', array("https://ldap.ffzg.hr"));
+        $this->add_setting('directory', "ol");
         $this->add_setting('role', "contributor");
         $this->add_setting('high_security', "true");
         $this->add_setting('ol_login', "uid");
         $this->add_setting('ol_group', "cn");
         $this->add_setting('use_tls', "false");
-        $this->add_setting('ldap_port', 389);
+        $this->add_setting('ldap_port', '');
         $this->add_setting('ldap_version', 3);
         $this->add_setting('create_users', "false");
-        $this->add_setting('enabled', "false");
+        $this->add_setting('enabled', "true");
         $this->add_setting('search_sub_ous', "false");
         $this->add_setting('group_dn', "");
         $this->add_setting('group_uid', "memberUid");
@@ -388,7 +388,7 @@ class SimpleLDAPLogin {
                         do_action('wp_login_failed', $username);
                         return $this->ldap_auth_error('invalid_username', __('<strong>Simple LDAP Login Error</strong>: LDAP credentials are correct, but there is no matching WordPress user and user creation is not enabled.'));
                     }
-
+// XXX 
                     $new_user = wp_insert_user($this->get_user_data($username, trim($this->get_setting('directory'))));
 
                     if (!is_wp_error($new_user)) {
