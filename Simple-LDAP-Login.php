@@ -459,10 +459,19 @@ class SimpleLDAPLogin {
         $result = false;
 
 	    function _log($string) {
-		error_log("$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string", 0);
+		//error_log("$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string", 0);
+		$full_msg = "$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string";
+		if ( openlog("wp-ldap", LOG_PID, LOG_USER) ) {
+			syslog(LOG_NOTICE, $full_msg);
+		} else {
+			error_log($full_msg, 0);
+		}
 	    }
+
+/*
 	_log("ldap_auth username: $username");
-//        $username = preg_replace("/\@ffzg\.hr$/", "", $username);
+        $username = preg_replace("/\@ffzg\.hr$/", "", $username);
+*/
 
         if ($directory == "ad") {
             $result = $this->adldap->authenticate($this->get_domain_username($username), $password, FALSE, $sso_auth);
@@ -494,14 +503,13 @@ class SimpleLDAPLogin {
                     }
                 }
             }
-            _log("dn: $dn");
             $ldapbind = ldap_bind($this->ldap, $dn, $password);
             $this->dn = $dn;
             $result = $ldapbind;
         }
 
-        ldap_get_option($this->ldap, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
-	_log("ldap_auth: $username = $result [$extended_error]");
+        //ldap_get_option($this->ldap, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
+	_log("dn:$dn user:$username bind:$result");
 
         return apply_filters($this->prefix . 'ldap_auth', $result);
     }
