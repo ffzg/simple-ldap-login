@@ -115,6 +115,7 @@ class SimpleLDAPLogin {
     }
 
     function activate() {
+	$this->_log("activate");
         // Default settings
         $this->add_setting('account_suffix', "@ffzg.hr"); // not used for openldap
         $this->add_setting('base_dn', "DC=ffzg,DC=hr");
@@ -146,6 +147,8 @@ class SimpleLDAPLogin {
         $this->add_setting('user_meta_data', array());
         $this->add_setting('meta_data_suffix_ldap', 'ldap');
         $this->add_setting('meta_data_suffix_wp', 'wp');
+
+	$this->_log( print_r($this->get_setting('domain_controllers'), TRUE) );
     }
 
     function upgrade_settings() {
@@ -454,10 +457,6 @@ class SimpleLDAPLogin {
         return $username;
     }
 
-
-    function ldap_auth($username, $password, $directory, $sso_auth) {
-        $result = false;
-
 	    function _log($string) {
 		//error_log("$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string", 0);
 		$full_msg = "$_SERVER[HTTP_HOST] $_SERVER[SCRIPT_FILENAME] $string";
@@ -468,8 +467,12 @@ class SimpleLDAPLogin {
 		}
 	    }
 
+    function ldap_auth($username, $password, $directory, $sso_auth) {
+        $result = false;
+
+
 /*
-	_log("ldap_auth username: $username");
+	$this->_log("ldap_auth username: $username");
         $username = preg_replace("/\@ffzg\.hr$/", "", $username);
 */
 
@@ -494,7 +497,7 @@ class SimpleLDAPLogin {
             if (str_true($this->get_setting('search_sub_ous'))) {
                 // search for user's DN in the base DN and below
                 $filter = sprintf('(%s=%s)', trim($this->get_setting('ol_login')), $this->esc_ldap_filter_val($username));
-		_log("filter: $filter");
+		$this->_log("filter: $filter");
                 $sr = ldap_search($this->ldap, $this->get_setting('base_dn'), $filter, array('cn'));
                 if ($sr !== FALSE) {
                     $info = ldap_get_entries($this->ldap, $sr);
@@ -509,7 +512,7 @@ class SimpleLDAPLogin {
         }
 
         //ldap_get_option($this->ldap, LDAP_OPT_DIAGNOSTIC_MESSAGE, $extended_error);
-	_log("dn:$dn user:$username bind:$result");
+	$this->_log("dn:$dn user:$username bind:$result");
 
         return apply_filters($this->prefix . 'ldap_auth', $result);
     }
