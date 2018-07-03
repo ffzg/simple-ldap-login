@@ -377,6 +377,11 @@ class SimpleLDAPLogin {
             remove_filter('authenticate', 'wp_authenticate_username_password', 20, 3);
         }
 
+	// XXX dpavlin -- strip our domain from username
+	$old_username = $username;
+	$username = preg_replace("/\@ffzg\.hr$/", "", $username);
+	$this->_log("authenticate username=$username entered=$old_username");
+
         // Sweet, let's try to authenticate our user and pass against LDAP
         $auth_result = $this->ldap_auth($username, $password, trim($this->get_setting('directory')), $sso_auth);
 
