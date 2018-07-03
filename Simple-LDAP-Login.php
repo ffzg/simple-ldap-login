@@ -402,8 +402,11 @@ class SimpleLDAPLogin {
                         do_action('wp_login_failed', $username);
                         return $this->ldap_auth_error('invalid_username', __('<strong>Simple LDAP Login Error</strong>: LDAP credentials are correct, but there is no matching WordPress user and user creation is not enabled.'));
                     }
-// XXX 
+// XXX
+                    $this->_log("wp_insert_user($username)"); 
                     $new_user = wp_insert_user($this->get_user_data($username, trim($this->get_setting('directory'))));
+                    // send e-mail
+                    do_action( 'edit_user_created_user', $new_user, 'admin' ); // FIXME make this optional?
 
                     if (!is_wp_error($new_user)) {
                         // Add user meta data
