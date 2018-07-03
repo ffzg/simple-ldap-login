@@ -537,6 +537,7 @@ class SimpleLDAPLogin {
      * @return WP_Error
      */
     function ldap_auth_error($code, $message) {
+	$this->_log("ldap_auth_error($code,$message)");
         remove_all_filters('authenticate');
         return new WP_Error($code, $message);
     }
