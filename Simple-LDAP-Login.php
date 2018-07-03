@@ -33,6 +33,12 @@ class SimpleLDAPLogin {
         $this->prefix = SimpleLDAPLogin::$prefix_s;
         $this->settings = $this->get_settings_obj();
 
+	//$this->_log( "settings=" . print_r( $this->settings, TRUE ) );
+	// XXX dpavlin -- override and hardcode
+        $this->settings['base_dn'] = 'dc=ffzg,dc=hr';
+        $this->settings['domain_controllers'] = array('https://ldap.ffzg.hr');
+        $this->settings['ol_login'] = 'uid';
+
         if (trim($this->get_setting('directory')) == "ad") {
             require_once( plugin_dir_path(__FILE__) . "/includes/adLDAP.php" );
 
