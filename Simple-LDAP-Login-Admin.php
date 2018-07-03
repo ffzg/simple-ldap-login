@@ -16,7 +16,9 @@ if (isset($_GET['tab'])) {
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'simple'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'simple' ? 'nav-tab-active' : ''; ?>">Simple</a>
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'advanced'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'advanced' ? 'nav-tab-active' : ''; ?>">Advanced</a>
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'user'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'user' ? 'nav-tab-active' : ''; ?>">User</a>
+<!--
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'sso'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'sso' ? 'nav-tab-active' : ''; ?>">SSO</a>
+-->
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'help'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'help' ? 'nav-tab-active' : ''; ?>">Help</a>
     </h2>
 
@@ -35,6 +37,7 @@ if (isset($_GET['tab'])) {
                             <label><input type="checkbox" name="<?php echo esc_attr($this->get_field_name('enabled')); ?>" value="true" <?php if (str_true($this->get_setting('enabled'))) echo "checked='checked'"; ?> /> Enable LDAP login authentication for WordPress. (this one is kind of important)</label><br/>
                         </td>
                     </tr>
+<!--
                     <tr>
                         <th scope="row" valign="top">Account Suffix</th>
                         <td>
@@ -64,6 +67,7 @@ if (isset($_GET['tab'])) {
                             <label><input type="radio" name="<?php echo esc_attr($this->get_field_name('directory')); ?>" value="ol" <?php if ($this->get_setting('directory') == "ol") echo "checked='checked'"; ?> /> Open LDAP (and etc)</label>
                         </td>
                     </tr>
+-->
                 </tbody>
             </table>
             <p><input class="button-primary" type="submit" value="Save Settings" /></p>
@@ -117,6 +121,7 @@ if (isset($_GET['tab'])) {
                             If you need to specify a different Base DN for group searches. Example: For subdomain.domain.suffix, use ou=groups,DC=subdomain,DC=domain,DC=suffix.
                         </td>
                     </tr>
+<!--
                     <tr>
                         <th scope="row" valign="top">LDAP Login Attribute</th>
                         <td>
@@ -125,6 +130,7 @@ if (isset($_GET['tab'])) {
                             Default: <b>uid</b>;
                         </td>
                     </tr>
+-->
                     <tr>
                         <th scope="row" valign="top">LDAP Group Attribute</th>
                         <td>
@@ -133,6 +139,7 @@ if (isset($_GET['tab'])) {
                             In case your installation uses something other than <b>cn</b>;
                         </td>
                     </tr>
+<!--
                     <tr>
                         <th scope="row" valign="top">Use TLS</th>
                         <td>
@@ -154,6 +161,7 @@ if (isset($_GET['tab'])) {
                             Only applies to Open LDAP. Typically 3.
                         </td>
                     </tr>
+-->
                     <tr>
                         <th scope="row" valign="top">Search Sub OUs</th>
                         <td>
@@ -161,6 +169,7 @@ if (isset($_GET['tab'])) {
                             <label><input type="checkbox" name="<?php echo esc_attr($this->get_field_name('search_sub_ous')); ?>" value="true" <?php if (str_true($this->get_setting('search_sub_ous'))) echo "checked='checked'"; ?> /> Also search sub-OUs of Base DN. For example, if the base DN is "ou=People,dc=example,dc=com", also search "ou=Staff,ou=People,dc=example,dc=com for uid=<i>username</i></label><br/>
                         </td>
                     </tr>
+<!--
                     <tr>
                         <th scope="row" valign="top">Login Domain</th>
                         <td>
@@ -168,6 +177,7 @@ if (isset($_GET['tab'])) {
                             prefixes login names with this domain, f.i. mydomain\username
                         </td>
                     </tr>
+-->
                 </tbody>
             </table>
             <p><input class="button-primary" type="submit" value="Save Settings" /></p>
