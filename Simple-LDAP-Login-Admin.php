@@ -10,7 +10,7 @@ if (isset($_GET['tab'])) {
 <div class="wrap">
 
     <div id="icon-themes" class="icon32"></div>
-    <h2>Simple LDAP Login Settings</h2>
+    <h2>FFZG LDAP Login Settings</h2>
 
     <h2 class="nav-tab-wrapper">
         <a href="<?php echo esc_url(add_query_arg(array('tab' => 'simple'), $_SERVER['REQUEST_URI'])); ?>" class="nav-tab <?php echo $active_tab == 'simple' ? 'nav-tab-active' : ''; ?>">Simple</a>
@@ -27,7 +27,7 @@ if (isset($_GET['tab'])) {
 
         <?php if ($active_tab == "simple"): ?>
             <h3>Required</h3>
-            <p>These are the most basic settings you must configure. Without these, you won't be able to use Simple LDAP Login.</p>
+            <p>These are the most basic settings you must configure. Without these, you won't be able to use FFZG LDAP Login.</p>
             <table class="form-table">
                 <tbody>
                     <tr>
@@ -321,7 +321,7 @@ if (isset($_GET['tab'])) {
             <p><input class="button-primary" type="submit" value="Save Settings" /></p>
             <?php else: ?>
             <h3>Help</h3>
-            <p>Here's a brief primer on how to effectively use and test Simple LDAP Login.</p>
+            <p>Here's a brief primer on how to effectively use and test FFZG LDAP Login.</p>
             <h4>SSO (Single Sign-on)</h4>
             <p>For this functionality, you must configure the Apache to use an authentication method in the Wordpress Directory.</p>
             <ul>
@@ -331,7 +331,7 @@ if (isset($_GET['tab'])) {
             <h4>Testing</h4>
             <p>The most effective way to test logins is to use two browsers. In other words, keep the WordPress Dashboard open in Chrome, and use Firefox to try logging in. This will give you real time feedback on your settings and prevent you from inadvertently locking yourself out.</p>
             <h4>Which raises the question, what happens if I get locked out?</h4>
-            <p>If you accidentally lock yourself out, the easiest way to get back in is to rename <strong><?php echo plugin_dir_path(__FILE__); ?></strong> to something else and then refresh. WordPress will detect the change and disable Simple LDAP Login. You can then rename the folder back to its previous name.</p>
+            <p>If you accidentally lock yourself out, the easiest way to get back in is to rename <strong><?php echo plugin_dir_path(__FILE__); ?></strong> to something else and then refresh. WordPress will detect the change and disable FFZG LDAP Login. You can then rename the folder back to its previous name.</p>
         <?php endif; ?>
     </form>
 </div>

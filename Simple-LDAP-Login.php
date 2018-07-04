@@ -1,9 +1,9 @@
 <?php
 /*
-  Plugin Name: Simple LDAP Login
+  Plugin Name: FFZG LDAP Login
   Plugin URI: http://clifgriffin.com/simple-ldap-login/
   Description:  Authenticate WordPress against LDAP.
-  Version: 1.8.0
+  Version: 2018.7.4
   Author: Clif Griffin Development Inc.
   Author URI: http://cgd.io
  */
@@ -240,10 +240,10 @@ class SimpleLDAPLogin {
     function menu() {
         if ($this->is_network_version()) {
             add_submenu_page(
-                    "settings.php", "Simple LDAP Login", "Simple LDAP Login", 'manage_network_plugins', "simple-ldap-login", array($this, 'admin_page')
+                    "settings.php", "FFZG LDAP Login", "FFZG LDAP Login", 'manage_network_plugins', "simple-ldap-login", array($this, 'admin_page')
             );
         } else {
-            add_options_page("Simple LDAP Login", "Simple LDAP Login", 'manage_options', "simple-ldap-login", array($this, 'admin_page'));
+            add_options_page("FFZG LDAP Login", "FFZG LDAP Login", 'manage_options', "simple-ldap-login", array($this, 'admin_page'));
         }
     }
 
@@ -334,13 +334,13 @@ class SimpleLDAPLogin {
         if (str_true($this->get_setting('enabled'))) {
             ?>
             <div class="notice notice-success is-dismissible">
-                <p><?php _e('Simple LDAP Login settings have been saved.', $this->prefix); ?></p>
+                <p><?php _e('FFZG LDAP Login settings have been saved.', $this->prefix); ?></p>
             </div>
             <?php
         } else {
             ?>
             <div class="notice notice-error is-dismissible">
-                <p><?php _e('Simple LDAP Login is disabled.', $this->prefix); ?></p>
+                <p><?php _e('FFZG LDAP Login is disabled.', $this->prefix); ?></p>
             </div>
             <?php
         }
@@ -400,7 +400,7 @@ class SimpleLDAPLogin {
                 if (!$user || ( strtolower($user->user_login) !== strtolower($username) )) {
                     if (!str_true($this->get_setting('create_users'))) {
                         do_action('wp_login_failed', $username);
-                        return $this->ldap_auth_error('invalid_username', __('<strong>Simple LDAP Login Error</strong>: LDAP credentials are correct, but there is no matching WordPress user and user creation is not enabled.'));
+                        return $this->ldap_auth_error('invalid_username', __('<strong>FFZG LDAP Login Error</strong>: LDAP credentials are correct, but there is no matching WordPress user and user creation is not enabled.'));
                     }
 // XXX
                     $this->_log("wp_insert_user($username)"); 
@@ -427,7 +427,7 @@ class SimpleLDAPLogin {
                         return $new_user;
                     } else {
                         do_action('wp_login_failed', $username);
-                        return $this->ldap_auth_error("{$this->prefix}login_error", __('<strong>Simple LDAP Login Error</strong>: LDAP credentials are correct and user creation is allowed but an error occurred creating the user in WordPress. Actual error: ' . $new_user->get_error_message()));
+                        return $this->ldap_auth_error("{$this->prefix}login_error", __('<strong>FFZG LDAP Login Error</strong>: LDAP credentials are correct and user creation is allowed but an error occurred creating the user in WordPress. Actual error: ' . $new_user->get_error_message()));
                     }
                 } else {
 
@@ -450,10 +450,10 @@ class SimpleLDAPLogin {
                     return new WP_User($user->ID);
                 }
             } else {
-                return $this->ldap_auth_error("{$this->prefix}login_error", __('<strong>Simple LDAP Login Error</strong>: Your LDAP credentials are correct, but you are not in an authorized LDAP group.'));
+                return $this->ldap_auth_error("{$this->prefix}login_error", __('<strong>FFZG LDAP Login Error</strong>: Your LDAP credentials are correct, but you are not in an authorized LDAP group.'));
             }
         } elseif (str_true($this->get_setting('high_security'))) {
-            return $this->ldap_auth_error('invalid_username', __('<strong>Simple LDAP Login</strong>: Simple LDAP Login could not authenticate your credentials. The security settings do not permit trying the WordPress user database as a fallback.'));
+            return $this->ldap_auth_error('invalid_username', __('<strong>FFZG LDAP Login</strong>: FFZG LDAP Login could not authenticate your credentials. The security settings do not permit trying the WordPress user database as a fallback.'));
         }
 
         do_action($this->prefix . 'auth_failure');
